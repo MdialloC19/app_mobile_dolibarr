@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'accueil_page.dart';
+import 'contacts.dart';
 import 'my_drawer_header.dart';
 
 void main() {
@@ -11,32 +12,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Acceuil(),
+      home: Accueil(),
     );
   }
 }
 
-class Acceuil extends StatefulWidget {
+class Accueil extends StatefulWidget {
   @override
-  State<Acceuil> createState() => _AcceuilState();
+  State<Accueil> createState() => _AccueilState();
 }
 
-class _AcceuilState extends State<Acceuil> {
-  var currentPage = MenuDeNavigation;
+class _AccueilState extends State<Accueil> {
+  var currentPage = MenuDeNavigation.accueil;
   @override
   Widget build(BuildContext context) {
+    var container;
+    if (currentPage == MenuDeNavigation.accueil) {
+      container = AccueilPage();
+    } else if (currentPage == MenuDeNavigation.gestion_produits_services) {
+      container = ContactsPage();
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: Center(
-          child: Text('Acceuil Dolibarr'),
+          child: Text('Accueil Dolibarr'),
         ),
       ),
-      body: Container(
-        child: Center(
-          child: Text("Nous allons l'améliorer Acceuil"),
-        ),
-      ),
+      body: container,
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -57,7 +60,7 @@ class _AcceuilState extends State<Acceuil> {
       child: Column(
         //cela nous permet de montreer la listes des menus
         children: [
-          menuItem(1, "Acceuil", Icons.dashboard_outlined,
+          menuItem(1, "Accueil", Icons.dashboard_outlined,
               currentPage == MenuDeNavigation.accueil ? true : false),
           menuItem(
               2,
@@ -75,14 +78,23 @@ class _AcceuilState extends State<Acceuil> {
     return Material(
       color: selected ? Colors.blue[300] : Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            if (id == 1) {
+              currentPage = MenuDeNavigation.accueil;
+            } else if (id == 2) {
+              currentPage = MenuDeNavigation.gestion_produits_services;
+            }
+          });
+        },
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: Row(
             children: [
               Expanded(
                 child: Icon(
-                  Icons.dashboard_outlined,
+                  icon,
                   size: 20,
                   color: Colors.black,
                 ),
@@ -90,7 +102,7 @@ class _AcceuilState extends State<Acceuil> {
               Expanded(
                 flex: 3,
                 child: Text(
-                  'Accueil',
+                  title,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
