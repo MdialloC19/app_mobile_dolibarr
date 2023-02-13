@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 
 class EnteteDrawer extends StatefulWidget {
@@ -44,3 +45,6 @@ class _EnteteDrawerState extends State<EnteteDrawer> {
     );
   }
 }
+=======
+
+>>>>>>> 3bba71bee9f299b7da85a6a8af1db648ac37ba76
