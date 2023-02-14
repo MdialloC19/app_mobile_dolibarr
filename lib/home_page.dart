@@ -1,3 +1,4 @@
+import 'package:app_mobile_dolibarr/main.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -22,7 +23,10 @@ class MyHomePage extends StatelessWidget {
             height: 50,
           ),
           OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+            },
             icon: const Icon(Icons.exit_to_app),
             label: const Text("Logout"),
           ),
