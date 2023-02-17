@@ -1,4 +1,4 @@
-import 'package:app_mobile_dolibarr/pages/Tiers.dart';
+import 'package:app_mobile_dolibarr/pages/tiers.dart';
 import 'package:app_mobile_dolibarr/pages/contact.dart';
 import 'package:app_mobile_dolibarr/pages/entrepot.dart';
 import 'package:app_mobile_dolibarr/pages/product.dart';
