@@ -51,14 +51,25 @@ class _DataProductState extends State<DataProduct> {
                     ListView.builder(
                       itemCount: snapshot.data.length,
                       itemBuilder: ((context, i) {
-                        return ListTile(
-                          title: Text(
-                            snapshot.data[i]['label'],
-                            style: const TextStyle(
-                                fontFamily: 'Kanit', fontSize: 20),
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailsProducts(data: snapshot.data[i]),
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            title: Text(
+                              snapshot.data[i]['label'],
+                              style: const TextStyle(
+                                  fontFamily: 'Kanit', fontSize: 20),
+                            ),
+                            subtitle: Text(snapshot.data[i]['description']),
+                            trailing: Text(snapshot.data[i]['price']),
                           ),
-                          subtitle: Text(snapshot.data[i]['description']),
-                          trailing: Text(snapshot.data[i]['price']),
                         );
                       }),
                     ),
@@ -76,6 +87,168 @@ class _DataProductState extends State<DataProduct> {
                 );
               }
             }),
+      ),
+    );
+  }
+}
+
+class DetailsProducts extends StatefulWidget {
+  final Map<String, dynamic> data;
+
+  const DetailsProducts({super.key, required this.data});
+
+  @override
+  State<DetailsProducts> createState() => _DetailsProductsState();
+}
+
+class _DetailsProductsState extends State<DetailsProducts> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Détails du Products'),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                '${widget.data['label']}',
+                style: const TextStyle(
+                  fontFamily: 'Kanit',
+                  fontSize: 50,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Description: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['description']}',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Prix: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['price']} FCFA',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'TVA: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['tva_tx']}',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Limite stock: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['seuil_stock_alerte']}',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Date création: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['date_creation']}',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Poids: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arial',
+                        fontSize: 20),
+                  ),
+                  TextSpan(
+                    text: '${widget.data['weight']} g',
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

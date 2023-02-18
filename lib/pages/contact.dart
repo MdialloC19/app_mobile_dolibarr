@@ -49,21 +49,192 @@ class _DataContactState extends State<DataContact> {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: ((context, i) {
-                      return ListTile(
-                        title: Text(
-                          (snapshot.data[i]['firstname'] ?? '') +
-                              ' ' +
-                              (snapshot.data[i]['lastname'] ?? ''),
-                          style: const TextStyle(
-                              fontFamily: 'Kanit', fontSize: 20),
-                        ),
-                        subtitle: Text(snapshot.data[i]['phone_mobile'] ?? ''),
-                        trailing: Text(snapshot.data[i]['town'] ?? ''),
-                      );
+                      return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailsContacts(data: snapshot.data[i]),
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            title: Text(
+                              (snapshot.data[i]['firstname'] ?? '') +
+                                  ' ' +
+                                  (snapshot.data[i]['lastname'] ?? ''),
+                              style: const TextStyle(
+                                  fontFamily: 'Kanit', fontSize: 20),
+                            ),
+                            subtitle:
+                                Text(snapshot.data[i]['phone_mobile'] ?? ''),
+                            trailing: Text(snapshot.data[i]['town'] ?? ''),
+                          ));
                     }));
               }
             }),
       ),
     );
+  }
+}
+
+class DetailsContacts extends StatefulWidget {
+  final Map<String, dynamic> data;
+
+  const DetailsContacts({super.key, required this.data});
+
+  @override
+  State<DetailsContacts> createState() => _DetailsContactsState();
+}
+
+class _DetailsContactsState extends State<DetailsContacts> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Détails du Contacts'),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Column(children: [
+                    Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: Image.asset('images/profile.png'),
+                      ),
+                    ),
+                    Text(
+                      '${widget.data['firstname']} ${widget.data['lastname']}',
+                      style: const TextStyle(
+                        fontFamily: 'Kanit',
+                        fontSize: 45,
+                      ),
+                    ),
+                  ]),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: const Divider(),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text: 'Tél: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Arial',
+                            fontSize: 20),
+                      ),
+                      TextSpan(
+                        text: '${widget.data['phone_mobile']}',
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text: 'Email: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Arial',
+                            fontSize: 20),
+                      ),
+                      TextSpan(
+                        text: '${widget.data['email']} FCFA',
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text: 'Ville: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Arial',
+                            fontSize: 20),
+                      ),
+                      TextSpan(
+                        text: '${widget.data['town']}',
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text: 'Adresse: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Arial',
+                            fontSize: 20),
+                      ),
+                      TextSpan(
+                        text: '${widget.data['address']}',
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text: 'Code postale: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Arial',
+                            fontSize: 20),
+                      ),
+                      TextSpan(
+                        text: '${widget.data['zip']}',
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
