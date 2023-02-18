@@ -1,175 +1,58 @@
+import 'package:app_mobile_dolibarr/dashboard.dart';
 import 'package:app_mobile_dolibarr/pages/tiers.dart';
 import 'package:app_mobile_dolibarr/pages/contact.dart';
 import 'package:app_mobile_dolibarr/pages/entrepot.dart';
 import 'package:app_mobile_dolibarr/pages/product.dart';
+import 'package:app_mobile_dolibarr/pages/profile.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
-  //StatelessWidget
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    DashboardPage(),
+    MyProfile(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  //StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //Home Page Scaffold
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text("Home Page"),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade600,
-                            spreadRadius: 1,
-                            blurRadius: 15),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DataProduct()),
-                        );
-                      },
-                      icon: Image.asset('images/produit.png'),
-                      iconSize: 100,
-                    ),
-                  ),
-                  const Text(
-                    "Produits",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Kanit',
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade600,
-                            spreadRadius: 1,
-                            blurRadius: 15),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DataContact()),
-                        );
-                      },
-                      icon: Image.asset('images/contact.png'),
-                      iconSize: 100,
-                    ),
-                  ),
-                  const Text(
-                    "Contacts",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Kanit',
-                    ),
-                  )
-                ],
-              )
-            ],
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          const SizedBox(
-            height: 20,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade600,
-                            spreadRadius: 1,
-                            blurRadius: 15),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DataTier()),
-                        );
-                      },
-                      icon: Image.asset('images/Collaborateurs.png'),
-                      iconSize: 100,
-                    ),
-                  ),
-                  const Text(
-                    "Tiers",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Kanit',
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade600,
-                            spreadRadius: 1,
-                            blurRadius: 15),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DataEntrepot()),
-                        );
-                      },
-                      icon: Image.asset('images/entrepot.png'),
-                      iconSize: 100,
-                    ),
-                  ),
-                  const Text(
-                    "Entrepôts",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Kanit',
-                    ),
-                  )
-                ],
-              )
-            ],
-          )
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }

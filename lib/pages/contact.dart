@@ -34,6 +34,7 @@ class _DataContactState extends State<DataContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text("Liste des conta"),
         centerTitle: true,
       ),
@@ -46,7 +47,8 @@ class _DataContactState extends State<DataContact> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return ListView.builder(
+                return Stack(children: [
+                  ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: ((context, i) {
                       return InkWell(
@@ -71,9 +73,34 @@ class _DataContactState extends State<DataContact> {
                                 Text(snapshot.data[i]['phone_mobile'] ?? ''),
                             trailing: Text(snapshot.data[i]['town'] ?? ''),
                           ));
-                    }));
+                    }),
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    right: 16,
+                    child: IconButton(
+                      onPressed: () {
+                        // Ajoutez votre code pour ajouter un nouveau tier ici
+                      },
+                      icon: Image.asset('images/add-contact.png'),
+                      iconSize: 20,
+                    ),
+                  ),
+                ]);
               }
             }),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
@@ -89,152 +116,131 @@ class DetailsContacts extends StatefulWidget {
 }
 
 class _DetailsContactsState extends State<DetailsContacts> {
+  Widget textFormat(String text, String data) {
+    return Text.rich(
+      TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: text,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'Kanit', fontSize: 25),
+          ),
+          TextSpan(
+            text: ': ${widget.data[data]}',
+            style: const TextStyle(fontSize: 25, fontFamily: 'Kanit-Regular'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container ligne() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0),
+      child: const Divider(
+        color: Colors.grey,
+        thickness: 0.2,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Détails du Contacts'),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Column(children: [
-                    Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Transform.scale(
-                        scale: 0.5,
-                        child: Image.asset('images/profile.png'),
-                      ),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
+        title: const Text('Détails du Contacts'),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey.shade200,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Image.asset('images/profile.png'),
+                  ),
+                  Text(
+                    '${widget.data['firstname']} ${widget.data['lastname']}',
+                    style: const TextStyle(
+                      fontFamily: 'Kanit',
+                      fontSize: 40,
                     ),
-                    Text(
-                      '${widget.data['firstname']} ${widget.data['lastname']}',
-                      style: const TextStyle(
-                        fontFamily: 'Kanit',
-                        fontSize: 45,
-                      ),
+                  ),
+                ]),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                child: const Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 5),
+                      )
+                    ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textFormat('Tél', 'phone_mobile'),
+                    ligne(),
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ]),
+                    textFormat('Email', 'email'),
+                    ligne(),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    textFormat('Ville', 'town'),
+                    ligne(),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    textFormat('Adresse', 'address'),
+                    ligne(),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    textFormat('Code postal', 'zip'),
+                    ligne(),
+                  ],
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const Divider(),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Tél: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Arial',
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${widget.data['phone_mobile']}',
-                        style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Email: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Arial',
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${widget.data['email']} FCFA',
-                        style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Ville: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Arial',
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${widget.data['town']}',
-                        style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Adresse: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Arial',
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${widget.data['address']}',
-                        style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Code postale: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Arial',
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${widget.data['zip']}',
-                        style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -34,6 +34,7 @@ class _DataTierState extends State<DataTier> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text("Liste des tiers"),
         centerTitle: true,
       ),
@@ -46,33 +47,58 @@ class _DataTierState extends State<DataTier> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: ((context, i) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsTiers(data: snapshot.data[i]),
+                return Stack(children: [
+                  ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: ((context, i) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailsTiers(data: snapshot.data[i]),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          title: Text(
+                            snapshot.data[i]['name'],
+                            style: const TextStyle(
+                                fontFamily: 'Kanit', fontSize: 20),
                           ),
-                        );
-                      },
-                      child: ListTile(
-                        title: Text(
-                          snapshot.data[i]['name'],
-                          style: const TextStyle(
-                              fontFamily: 'Kanit', fontSize: 20),
+                          subtitle: Text(snapshot.data[i]['email']),
+                          trailing: Text(snapshot.data[i]['name_alias']),
                         ),
-                        subtitle: Text(snapshot.data[i]['email']),
-                        trailing: Text(snapshot.data[i]['name_alias']),
-                      ),
-                    );
-                  }),
-                );
+                      );
+                    }),
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    right: 16,
+                    child: IconButton(
+                      onPressed: () {
+                        // Ajoutez votre code pour ajouter un nouveau tier ici
+                      },
+                      icon: Image.asset('images/add-tier.png'),
+                      iconSize: 50,
+                    ),
+                  ),
+                ]);
               }
             }),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
@@ -88,184 +114,150 @@ class DetailsTiers extends StatefulWidget {
 }
 
 class _DetailsTiersState extends State<DetailsTiers> {
+  Widget textFormat(String text, String data) {
+    return Column(children: [
+      Text.rich(
+        TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: text,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Kanit',
+                  fontSize: 25),
+            ),
+            TextSpan(
+              text: ': ${widget.data[data]}',
+              style: const TextStyle(fontSize: 25, fontFamily: 'Kanit-Regular'),
+            ),
+          ],
+        ),
+      )
+    ]);
+  }
+
+  Container ligne() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0),
+      child: const Divider(
+        color: Colors.grey,
+        thickness: 0.2,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text('Détails du tiers'),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Transform.scale(
-                scale: 0.5,
-                child: Image.asset('images/user.png'),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey.shade200,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(children: [
+                  SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: Image.asset('images/user.png'),
+                  ),
+                  Text(
+                    '${widget.data['name']}',
+                    style: const TextStyle(
+                      fontFamily: 'Kanit',
+                      fontSize: 35,
+                    ),
+                  ),
+                ]),
               ),
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Nom: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['name']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: const Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Alias: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['name_alias']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
+              const SizedBox(
+                height: 30,
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Code client: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['code_client']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 5),
+                      )
+                    ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textFormat('Nom', 'name'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Alias', 'name_alias'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Code client', 'code_client'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Tél', 'phone'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Email', 'email'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Adresse', 'address'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Ville', 'town'),
+                    ligne(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    textFormat('Code postale', 'zip'),
+                    ligne(),
+                    const SizedBox(height: 16),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Tél: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['phone']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Mail: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['email']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Adresse: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['address']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Ville: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['town']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Code postal: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['zip']}',
-                    style: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

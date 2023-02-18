@@ -34,6 +34,7 @@ class _DataProductState extends State<DataProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text("Liste des produits"),
         centerTitle: true,
       ),
@@ -88,6 +89,18 @@ class _DataProductState extends State<DataProduct> {
               }
             }),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -102,153 +115,131 @@ class DetailsProducts extends StatefulWidget {
 }
 
 class _DetailsProductsState extends State<DetailsProducts> {
+  Widget textFormat(String text, String data) {
+    return Column(children: [
+      Text.rich(
+        TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: text,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Kanit',
+                  fontSize: 24),
+            ),
+            TextSpan(
+              text: ': ${widget.data[data]}',
+              style: const TextStyle(fontSize: 22, fontFamily: 'Kanit-Regular'),
+            ),
+          ],
+        ),
+      )
+    ]);
+  }
+
+  Container ligne() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0),
+      child: const Divider(
+        color: Colors.grey,
+        thickness: 0.2,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text('Détails du Products'),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                '${widget.data['label']}',
-                style: const TextStyle(
-                  fontFamily: 'Kanit',
-                  fontSize: 50,
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey.shade200,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  '${widget.data['label']}',
+                  style: const TextStyle(
+                    fontFamily: 'Kanit',
+                    fontSize: 50,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Description: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['description']}',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: const Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Prix: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['price']} FCFA',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
+              const SizedBox(
+                height: 30,
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'TVA: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['tva_tx']}',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Limite stock: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['seuil_stock_alerte']}',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Date création: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['date_creation']}',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Poids: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arial',
-                        fontSize: 20),
-                  ),
-                  TextSpan(
-                    text: '${widget.data['weight']} g',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Arial'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const SizedBox(height: 16),
-          ],
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade600,
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 5),
+                        )
+                      ]),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        textFormat('Description', 'description'),
+                        ligne(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        textFormat('Prix(en FCFA)', 'price'),
+                        ligne(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        textFormat('TVA', 'tva_tx'),
+                        ligne(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        textFormat('Limite stock', 'seuil_stock_alerte'),
+                        ligne(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        textFormat('Date création', 'date_creation'),
+                        ligne(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        textFormat('Poids(en g)', 'weight'),
+                        ligne(),
+                      ]))
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

@@ -34,6 +34,7 @@ class _DataEntrepotState extends State<DataEntrepot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan.shade300,
         title: const Text("Liste Entrepôts"),
         centerTitle: true,
       ),
@@ -47,20 +48,33 @@ class _DataEntrepotState extends State<DataEntrepot> {
                 );
               } else {
                 return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: ((context, i) {
-                      return ListTile(
-                        title: Text(
-                          snapshot.data[i]['label'],
-                          style: const TextStyle(
-                              fontFamily: 'Kanit', fontSize: 20),
-                        ),
-                        subtitle: Text(snapshot.data[i]['description']),
-                        trailing: Text(snapshot.data[i]['phone']),
-                      );
-                    }));
+                  itemCount: snapshot.data.length,
+                  itemBuilder: ((context, i) {
+                    return ListTile(
+                      title: Text(
+                        snapshot.data[i]['label'],
+                        style:
+                            const TextStyle(fontFamily: 'Kanit', fontSize: 20),
+                      ),
+                      subtitle: Text(snapshot.data[i]['description']),
+                      trailing: Text(snapshot.data[i]['phone']),
+                    );
+                  }),
+                );
               }
             }),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
