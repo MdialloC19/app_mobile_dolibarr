@@ -1,8 +1,4 @@
 import 'package:app_mobile_dolibarr/dashboard.dart';
-import 'package:app_mobile_dolibarr/pages/tiers.dart';
-import 'package:app_mobile_dolibarr/pages/contact.dart';
-import 'package:app_mobile_dolibarr/pages/entrepot.dart';
-import 'package:app_mobile_dolibarr/pages/product.dart';
 import 'package:app_mobile_dolibarr/pages/profile.dart';
 import 'package:flutter/material.dart';
 

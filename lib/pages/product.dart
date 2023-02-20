@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_mobile_dolibarr/pages/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -79,7 +80,11 @@ class _DataProductState extends State<DataProduct> {
                       right: 16,
                       child: FloatingActionButton(
                         onPressed: () {
-                          // Ajoutez votre code pour ajouter un nouveau tier ici
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddProductForm()));
                         },
                         child: const Icon(Icons.add),
                       ),
